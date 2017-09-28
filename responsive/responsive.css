@@ -4,12 +4,11 @@ Comp 20, Lab 4
 Image is 600 px by 398 px
 */
 
-.garfield {width:100%;}
-@media screen and (min-width:75%){.garfield {width:400px;height:133px;background:url(garfield.gif)0 0px;}}
-@media screen and (min-width:68.75%) and (max-width:75%) {.garfield {width:200px;height:133px;background:url(garfield.gif)400 0px;}}
-@media screen and (min-width:62.5%) and (max-width:68.5%) {.garfield {width:200px;height:133px;background:url(garfield.gif)0 -200px;}}
-@media screen and (min-width:56.25%) and (max-width:62.5%) {.garfield {width:200px;height:133px;background:url(garfield.gif)200 -200px;}}
-@media screen and (min-width:50%) and (max-width:56.25%) {.garfield {width:200px;height:133px;background:url(garfield.gif)400 -200px;}}
-@media screen and (min-width:43.75%) and (max-width:50%) {.garfield {width:200px;height:133px;background:url(garfield.gif)0 -400px;}}
-@media screen and (min-width:37.5%) and (max-width:43.75%) {.garfield {width:200px;height:133px;background:url(garfield.gif)200 -400px;}}
-@media screen and (max-width:37.5%) {.garfield {width:200px;height:133px;background:url(garfield.gif)400 -400px;}}
+@media screen and (min-width:1201px){.garfield {width:400px;height:133px;background-image:url(garfield.gif);background-position:0px 0px;}}
+@media screen and (min-width:1101px) and (max-width:1200px) {.garfield {width:200px;height:133px;background:url(garfield.gif);background-position:400px 0px;}}
+@media screen and (min-width:1001px) and (max-width:1100px) {.garfield {width:200px;height:133px;background:url(garfield.gif)0px -200px;}}
+@media screen and (min-width:901px) and (max-width:1000px) {.garfield {width:200px;height:133px;background:url(garfield.gif)200px -200px;}}
+@media screen and (min-width:801px) and (max-width:900px) {.garfield {width:200px;height:133px;background:url(garfield.gif)400px -200px;}}
+@media screen and (min-width:701px) and (max-width:800px) {.garfield {width:200px;height:133px;background:url(garfield.gif)0px -400px;}}
+@media screen and (min-width:601px) and (max-width:700px) {.garfield {width:200px;height:133px;background:url(garfield.gif)200px -400px;}}
+@media screen and (max-width:600px){.garfield {width:200px;height:133px;background:url(garfield.gif)400px -400px;}}
