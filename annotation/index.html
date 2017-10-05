@@ -15,12 +15,25 @@
 
 <script>
 	// Complete this section and create a CSS file named style.css
-	function addText(time) {
+	function initialText() {
+		var i;
+		var p1 = document.createElement("p");
+		var lyric = ["Children have You ever met the Bogeyman before", "No, of course You haven't for You're much too good, I'm sure;", "Don't You be afraid of him if he should visit You,", "He's a great big coward, so I'll tell You what to do"];
+		for (i=0; i<lyric.length; i++) {
+			p1.appendChild(document.createTextNode(lyric[i]));
+			p1.appendChild(document.createElement("br"));
+		}
 		var text = document.getElementById("lyrics");
-		text.innerHTML = "";
+		text.appendChild(p1);
 	}
-	var video = document.getElementByTagName("video");
-	video.addEventListener("playing", addText(video.currentTime), false); 
+	function changeText() {
+		var text = document.getElementById("lyrics");
+		text.firstChild.nodeValue = ""
+	}
+		//if (time < 5.0)
+		//	text.firstChild.nodeValue = "Children have You ever met the Bogeyman before";
+	var video = document.getElementById("a_classic");
+	video.addEventListener("play", () => { initialText(); }, false); 	
 </script>
 </body>
 </html>	
