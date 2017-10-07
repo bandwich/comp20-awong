@@ -1,1 +1,6 @@
 /* style sheet for video annotation */
+div {color:green; font-family:"Courier New", Courier, monospace;}
+h2 {font-family:Georgia, serif;}
+h1, div {text-align:center;}
+video {margin:auto; display:block;}
+body {background-color:#ababab;}
