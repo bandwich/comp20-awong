@@ -18,22 +18,40 @@
 	function initialText() {
 		var i;
 		var p1 = document.createElement("p");
-		var lyric = ["Children have You ever met the Bogeyman before", "No, of course You haven't for You're much too good, I'm sure;", "Don't You be afraid of him if he should visit You,", "He's a great big coward, so I'll tell You what to do"];
-		for (i=0; i<lyric.length; i++) {
-			p1.appendChild(document.createTextNode(lyric[i]));
+		var stanza = ["Children have You ever met the Bogeyman before", "No, of course You haven't for You're much too good, I'm sure;", "Don't You be afraid of him if he should visit You,", "He's a great big coward, so I'll tell You what to do"];
+		for (i=0; i<stanza.length; i++) {
+			p1.appendChild(document.createTextNode(stanza[i]));
 			p1.appendChild(document.createElement("br"));
 		}
 		var text = document.getElementById("lyrics");
 		text.appendChild(p1);
 	}
-	function changeText() {
+	function changeText(time) {
 		var text = document.getElementById("lyrics");
 		text.firstChild.nodeValue = ""
 	}
-		//if (time < 5.0)
-		//	text.firstChild.nodeValue = "Children have You ever met the Bogeyman before";
 	var video = document.getElementById("a_classic");
-	video.addEventListener("play", () => { initialText(); }, false); 	
+	var lyrical = document.getElementById("lyrics");
+	video.addEventListener("timeupdate", function(){
+		if (video.currentTime > 9 && video.currentTime < 25)
+			lyrical.innerHTML = "Children have You ever met the Bogeyman before" + "<br />" + "No, of course You haven't for You're much too good, I'm sure;" + "<br />" + "Don't You be afraid of him if he should visit You," + "<br />" + "He's a great big coward, so I'll tell You what to do";
+		else if (video.currentTime > 25 && video.currentTime < 41)
+			lyrical.innerHTML = "Stanza 2" + "<br />" + "newline";
+		else if (video.currentTime > 41 && video.currentTime < 57)
+			lyrical.innerHTML = "Stanza 3";
+		else if (video.currentTime > 57 && video.currentTime < 73)
+			lyrical.innerHTML = "Stanza 4";
+		else if (video.currentTime > 73 && video.currentTime < 7)
+			lyrical.innerHTML = "Stanza 5";
+		else if (video.currentTime > 7 && video.currentTime < 8)
+			lyrical.innerHTML = "Stanza 6";
+		else if (video.currentTime > 8 && video.currentTime < 9)
+			lyrical.innerHTML = "Stanza 7";
+		else if (video.currentTime > 9 && video.currentTime < 10)
+			lyrical.innerHTML = "Stanza 8";
+		else if (video.currentTime > 10 && video.currentTime < 11)
+			lyrical.innerHTML = "Stanza 9";
+	}, false);
 </script>
 </body>
 </html>	
