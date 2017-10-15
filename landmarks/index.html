@@ -6,21 +6,40 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta charset="utf-8">
 	<script async defer 
-		src="https://maps.google.com/maps/api/js?sensor=true"></script>
+		type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 	<link rel="stylesheet" href="style.css" />
 
 	<script>
+		var currentLat = 0;
+		var currentLong = 0;
+		var map;
+		var myMarker;
+		var myLoc;
+
 		function initMap() {
-			var currentLat;
-			var currentLong;
-			function getPosition(pos) {
+			navigator.geolocation.getCurrentPosition(function(pos) {
 				currentLat = pos.coords.latitude;
 				currentLong = pos.coords.longitude;
+				myLoc = new google.maps.LatLng(currentLat, currentLong);
+				map = new google.maps.Map(document.getElementById('map'), {center: myLoc, zoom:16});
 				getData(currentLat, currentLong);
-				var map = new google.maps.Map(document.getElementById('map'), {center: {lat: currentLat, lng: currentLong}, zoom:16});
-			}
-			navigator.geolocation.getCurrentPosition(getPosition);
+				addMarker();
+			});
 		}
+		function addMarker() {
+			myMarker = new google.maps.Marker({
+				position: myLoc,
+				map: map,
+				title: "My location"
+			});
+			var loginWindow = new google.maps.InfoWindow({
+				content: "Username: 58ijDq5h"
+			});
+			google.maps.event.addListener(myMarker, 'click', function() {
+				loginWindow.open(map, myMarker)
+			});
+		}
+
 		var dataReq = new XMLHttpRequest();
 		function getData(lat, long) {
 			dataReq.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
@@ -37,7 +56,6 @@
 			};
 			var parameters = "login=58ijDq5h" + "&" + "lat=" + lat + "&" + "lng=" + long;
 			dataReq.send(parameters);
-			console.log(lat + " " + long);
 		}
 	</script>
 </head>
