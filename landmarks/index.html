@@ -5,12 +5,39 @@
 	<title>Map</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta charset="utf-8">
-	<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+	<script async defer 
+		src="https://maps.google.com/maps/api/js?sensor=true"></script>
 	<link rel="stylesheet" href="style.css" />
 
 	<script>
 		function initMap() {
-			var map = new google.maps.Map(document.getElementById('map'), {center: {lat: 42.36, lng: -71.06}, zoom:16});
+			var currentLat;
+			var currentLong;
+			function getPosition(pos) {
+				currentLat = pos.coords.latitude;
+				currentLong = pos.coords.longitude;
+				getData(currentLat, currentLong);
+				var map = new google.maps.Map(document.getElementById('map'), {center: {lat: currentLat, lng: currentLong}, zoom:16});
+			}
+			navigator.geolocation.getCurrentPosition(getPosition);
+		}
+		var dataReq = new XMLHttpRequest();
+		function getData(lat, long) {
+			dataReq.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
+			dataReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			dataReq.onreadystatechange = function() {
+				if (dataReq.readyState == 4 && dataReq.status == 200) {
+					data = dataReq.responseText;
+					locs = JSON.parse(data);
+					console.log(locs);
+				}
+				else if (dataReq.readyState == 4 && dataRequest.status != 200)
+					console.log("Failed");
+				else console.log("Wait");
+			};
+			var parameters = "login=58ijDq5h" + "&" + "lat=" + lat + "&" + "lng=" + long;
+			dataReq.send(parameters);
+			console.log(lat + " " + long);
 		}
 	</script>
 </head>
