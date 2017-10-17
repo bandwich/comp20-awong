@@ -13,35 +13,36 @@
 		var currentLat = 0;
 		var currentLong = 0;
 		var map;
-		var myMarker;
+		var myUsername = "58ijDq5h";
 		var myLoc;
+		var locs;
 
 		function initMap() {
 			navigator.geolocation.getCurrentPosition(function(pos) {
 				currentLat = pos.coords.latitude;
 				currentLong = pos.coords.longitude;
 				myLoc = new google.maps.LatLng(currentLat, currentLong);
-				map = new google.maps.Map(document.getElementById('map'), {center: myLoc, zoom:16});
-				getData(currentLat, currentLong);
-				addMarker();
+				map = new google.maps.Map(document.getElementById('map'), {center: myLoc, zoom:18});
+				addMarker(myUsername, myLoc);
+				displayData(currentLat, currentLong);
 			});
 		}
-		function addMarker() {
-			myMarker = new google.maps.Marker({
-				position: myLoc,
+		function addMarker(username, location) {
+			var newMarker = new google.maps.Marker({
+				position: location,
 				map: map,
-				title: "My location"
+				title: "Location"
 			});
 			var loginWindow = new google.maps.InfoWindow({
-				content: "Username: 58ijDq5h"
+				content: username
 			});
-			google.maps.event.addListener(myMarker, 'click', function() {
-				loginWindow.open(map, myMarker)
+			google.maps.event.addListener(newMarker, 'click', function() {
+				loginWindow.open(map, newMarker)
 			});
 		}
 
 		var dataReq = new XMLHttpRequest();
-		function getData(lat, long) {
+		function displayData(lat, long) {
 			dataReq.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 			dataReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			dataReq.onreadystatechange = function() {
@@ -49,13 +50,24 @@
 					data = dataReq.responseText;
 					locs = JSON.parse(data);
 					console.log(locs);
+					displayPeopleMarkers(locs);
 				}
 				else if (dataReq.readyState == 4 && dataRequest.status != 200)
 					console.log("Failed");
 				else console.log("Wait");
 			};
-			var parameters = "login=58ijDq5h" + "&" + "lat=" + lat + "&" + "lng=" + long;
+			var parameters = "login=58ijDq5h" + "&lat=" + lat + "&lng=" + long;
 			dataReq.send(parameters);
+		}
+
+		function displayPeopleMarkers(locs) {
+			var people = locs.people.length;
+			console.log(people);
+			for (i=0; i<people; i++) {
+				usr = locs.people[i].login;
+				loc = new google.maps.LatLng(locs.people[i].lat, locs.people[i].lng);
+				addMarker(usr, loc);
+			}
 		}
 	</script>
 </head>
