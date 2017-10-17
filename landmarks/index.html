@@ -23,21 +23,34 @@
 				currentLong = pos.coords.longitude;
 				myLoc = new google.maps.LatLng(currentLat, currentLong);
 				map = new google.maps.Map(document.getElementById('map'), {center: myLoc, zoom:18});
-				addMarker(myUsername, myLoc);
+				//addMarker(myUsername, myLoc);
 				displayData(currentLat, currentLong);
 			});
 		}
-		function addMarker(username, location) {
+		function addPersonMarker(username, location) {
 			var newMarker = new google.maps.Marker({
 				position: location,
 				map: map,
-				title: "Location"
+				title: "Person"
 			});
 			var loginWindow = new google.maps.InfoWindow({
 				content: username
 			});
 			google.maps.event.addListener(newMarker, 'click', function() {
 				loginWindow.open(map, newMarker)
+			});
+		}
+		function addLocationMarker(details, location) {
+			var newMarker = new google.maps.Marker({
+				position: location,
+				map: map,
+				title: "Location"
+			});
+			var detailWindow = new google.maps.InfoWindow({
+				content: details
+			});
+			google.maps.event.addListener(newMarker, 'click', function() {
+				detailWindow.open(map, newMarker)
 			});
 		}
 
@@ -50,7 +63,8 @@
 					data = dataReq.responseText;
 					locs = JSON.parse(data);
 					console.log(locs);
-					displayPeopleMarkers(locs);
+					displayPeople(locs);
+					displayLandmarks(locs);
 				}
 				else if (dataReq.readyState == 4 && dataRequest.status != 200)
 					console.log("Failed");
@@ -60,13 +74,22 @@
 			dataReq.send(parameters);
 		}
 
-		function displayPeopleMarkers(locs) {
+		function displayPeople(locs) {
 			var people = locs.people.length;
-			console.log(people);
 			for (i=0; i<people; i++) {
 				usr = locs.people[i].login;
 				loc = new google.maps.LatLng(locs.people[i].lat, locs.people[i].lng);
-				addMarker(usr, loc);
+				//	console.log(loc);
+				addPersonMarker(usr, loc);
+			}
+		}
+		function displayLandmarks(locs) {
+			var landmarks = locs.landmarks.length;
+			for (i=0; i<landmarks; i++) {
+				usr = locs.landmarks[i].properties.Details;
+				loc = new google.maps.LatLng({lat: locs.landmarks[i].geometry.coordinates[1], lng: locs.landmarks[i].geometry.coordinates[0]});
+				console.log(loc);
+				addLocationMarker(usr, loc);
 			}
 		}
 	</script>
