@@ -6,13 +6,15 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta charset="utf-8">
 	<script async defer 
-		type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+		type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=geometry&sensor=true"></script>
 	<link rel="stylesheet" href="style.css" />
 
 	<script>
 		var currentLat = 0;
 		var currentLong = 0;
 		var map;
+		var closestLm;
+		var lm_distance = 2;
 		var myUsername = "58ijDq5h";
 		var myLoc;
 		var locs;
@@ -27,27 +29,46 @@
 				displayData(currentLat, currentLong);
 			});
 		}
+		function addMyMarker() {
+			var newMarker = new google.maps.Marker({
+				position: myLoc,
+				map: map,
+				icon: "me.png"
+			});
+			var myWindow = new google.maps.InfoWindow({
+				content: myUsername + "<br />" + "Closest landmark: " + closestLm + " (" + lm_distance + " miles away)"
+			});
+			google.maps.event.addListener(newMarker, 'click', function() {
+				myWindow.open(map, newMarker)
+			});
+		}
 		function addPersonMarker(username, location) {
 			var newMarker = new google.maps.Marker({
 				position: location,
 				map: map,
 				icon: "person.png"
 			});
+			var distance = (google.maps.geometry.spherical.computeDistanceBetween(location, myLoc) * 0.00062).toFixed(3);
 			var loginWindow = new google.maps.InfoWindow({
-				content: username
+				content: username + ": " + distance + " miles away"
 			});
 			google.maps.event.addListener(newMarker, 'click', function() {
 				loginWindow.open(map, newMarker)
 			});
 		}
 		function addLocationMarker(details, location) {
+			var distance = (google.maps.geometry.spherical.computeDistanceBetween(location, myLoc) * 0.00062).toFixed(3);
+			if (distance < lm_distance) {
+				lm_distance = distance;
+				closestLm = details.Location_Name;
+			}
 			var newMarker = new google.maps.Marker({
 				position: location,
 				map: map,
 				icon: "house.png"
 			});
 			var detailWindow = new google.maps.InfoWindow({
-				content: details
+				content: details.Details
 			});
 			google.maps.event.addListener(newMarker, 'click', function() {
 				detailWindow.open(map, newMarker)
@@ -65,6 +86,7 @@
 					console.log(locs);
 					displayPeople(locs);
 					displayLandmarks(locs);
+					addMyMarker();
 				}
 				else if (dataReq.readyState == 4 && dataRequest.status != 200)
 					console.log("Failed");
@@ -79,17 +101,15 @@
 			for (i=0; i<people; i++) {
 				usr = locs.people[i].login;
 				loc = new google.maps.LatLng(locs.people[i].lat, locs.people[i].lng);
-				//	console.log(loc);
 				addPersonMarker(usr, loc);
 			}
 		}
 		function displayLandmarks(locs) {
 			var landmarks = locs.landmarks.length;
 			for (i=0; i<landmarks; i++) {
-				usr = locs.landmarks[i].properties.Details;
+				info = locs.landmarks[i].properties;
 				loc = new google.maps.LatLng({lat: locs.landmarks[i].geometry.coordinates[1], lng: locs.landmarks[i].geometry.coordinates[0]});
-				console.log(loc);
-				addLocationMarker(usr, loc);
+				addLocationMarker(info, loc);
 			}
 		}
 	</script>
