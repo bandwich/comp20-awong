@@ -14,6 +14,7 @@
 		var currentLong = 0;
 		var map;
 		var closestLm;
+		var lm_coords;
 		var lm_distance = 2;
 		var myUsername = "58ijDq5h";
 		var myLoc;
@@ -25,7 +26,6 @@
 				currentLong = pos.coords.longitude;
 				myLoc = new google.maps.LatLng(currentLat, currentLong);
 				map = new google.maps.Map(document.getElementById('map'), {center: myLoc, zoom:18});
-				//addMarker(myUsername, myLoc);
 				displayData(currentLat, currentLong);
 			});
 		}
@@ -41,6 +41,14 @@
 			google.maps.event.addListener(newMarker, 'click', function() {
 				myWindow.open(map, newMarker)
 			});
+		}
+		function renderPolyline() {
+			var line = new google.maps.Polyline ({
+				path: [lm_coords, myLoc],
+				geodesic: true,
+				strokeColor: '#5DADE2'
+			});
+			line.setMap(map);
 		}
 		function addPersonMarker(username, location) {
 			var newMarker = new google.maps.Marker({
@@ -61,6 +69,7 @@
 			if (distance < lm_distance) {
 				lm_distance = distance;
 				closestLm = details.Location_Name;
+				lm_coords = location;
 			}
 			var newMarker = new google.maps.Marker({
 				position: location,
@@ -87,6 +96,7 @@
 					displayPeople(locs);
 					displayLandmarks(locs);
 					addMyMarker();
+					renderPolyline();
 				}
 				else if (dataReq.readyState == 4 && dataRequest.status != 200)
 					console.log("Failed");
