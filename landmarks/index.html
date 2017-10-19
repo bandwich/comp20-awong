@@ -29,17 +29,15 @@
 				displayData(currentLat, currentLong);
 			});
 		}
-		function addMyMarker() {
+		function addMyMarker(info) {
 			var newMarker = new google.maps.Marker({
 				position: myLoc,
 				map: map,
 				icon: "me.png"
 			});
-			var myWindow = new google.maps.InfoWindow({
-				content: myUsername + "<br />" + "Closest landmark: " + closestLm + " (" + lm_distance + " miles away)"
-			});
 			google.maps.event.addListener(newMarker, 'click', function() {
-				myWindow.open(map, newMarker)
+				info.setContent(myUsername + "<br />" + "Closest landmark: " + closestLm + " (" + lm_distance + " miles away)");
+				info.open(map, newMarker)
 			});
 		}
 		function renderPolyline() {
@@ -50,21 +48,19 @@
 			});
 			line.setMap(map);
 		}
-		function addPersonMarker(username, location) {
+		function addPersonMarker(username, location, info) {
 			var newMarker = new google.maps.Marker({
 				position: location,
 				map: map,
 				icon: "person.png"
 			});
 			var distance = (google.maps.geometry.spherical.computeDistanceBetween(location, myLoc) * 0.00062).toFixed(3);
-			var loginWindow = new google.maps.InfoWindow({
-				content: username + ": " + distance + " miles away"
-			});
 			google.maps.event.addListener(newMarker, 'click', function() {
-				loginWindow.open(map, newMarker)
+				info.setContent(username + ": " + distance + " miles away");
+				info.open(map, newMarker)
 			});
 		}
-		function addLocationMarker(details, location) {
+		function addLocationMarker(details, location, info) {
 			var distance = (google.maps.geometry.spherical.computeDistanceBetween(location, myLoc) * 0.00062).toFixed(3);
 			if (distance < lm_distance) {
 				lm_distance = distance;
@@ -76,16 +72,17 @@
 				map: map,
 				icon: "house.png"
 			});
-			var detailWindow = new google.maps.InfoWindow({
-				content: details.Details
-			});
 			google.maps.event.addListener(newMarker, 'click', function() {
-				detailWindow.open(map, newMarker)
+				info.setContent(details.Details); 
+				info.open(map, newMarker)
 			});
 		}
 
 		var dataReq = new XMLHttpRequest();
 		function displayData(lat, long) {
+			var info = new google.maps.InfoWindow({
+				content: ""
+			});
 			dataReq.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 			dataReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			dataReq.onreadystatechange = function() {
@@ -93,9 +90,9 @@
 					data = dataReq.responseText;
 					locs = JSON.parse(data);
 					console.log(locs);
-					displayPeople(locs);
-					displayLandmarks(locs);
-					addMyMarker();
+					displayPeople(locs, info);
+					displayLandmarks(locs, info);
+					addMyMarker(info);
 					renderPolyline();
 				}
 				else if (dataReq.readyState == 4 && dataRequest.status != 200)
@@ -106,20 +103,20 @@
 			dataReq.send(parameters);
 		}
 
-		function displayPeople(locs) {
+		function displayPeople(locs, inf) {
 			var people = locs.people.length;
 			for (i=0; i<people; i++) {
 				usr = locs.people[i].login;
 				loc = new google.maps.LatLng(locs.people[i].lat, locs.people[i].lng);
-				addPersonMarker(usr, loc);
+				addPersonMarker(usr, loc, inf);
 			}
 		}
-		function displayLandmarks(locs) {
+		function displayLandmarks(locs, inf) {
 			var landmarks = locs.landmarks.length;
 			for (i=0; i<landmarks; i++) {
 				info = locs.landmarks[i].properties;
 				loc = new google.maps.LatLng({lat: locs.landmarks[i].geometry.coordinates[1], lng: locs.landmarks[i].geometry.coordinates[0]});
-				addLocationMarker(info, loc);
+				addLocationMarker(info, loc, inf);
 			}
 		}
 	</script>
