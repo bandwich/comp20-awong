@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Map</title>
+	<title>Landmark Map</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta charset="utf-8">
 	<script async defer 
@@ -89,15 +89,11 @@
 				if (dataReq.readyState == 4 && dataReq.status == 200) {
 					data = dataReq.responseText;
 					locs = JSON.parse(data);
-					console.log(locs);
 					displayPeople(locs, info);
 					displayLandmarks(locs, info);
 					addMyMarker(info);
 					renderPolyline();
 				}
-				else if (dataReq.readyState == 4 && dataRequest.status != 200)
-					console.log("Failed");
-				else console.log("Wait");
 			};
 			var parameters = "login=58ijDq5h" + "&lat=" + lat + "&lng=" + long;
 			dataReq.send(parameters);
