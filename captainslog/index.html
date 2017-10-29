@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Captain's Log</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</head>
+
+<body>
+    <h1>Captain's Log</h1>
+    <h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+    <div id="log"></div>
+</body>
+<script>
+        // Your work will be done here...
+        $(document).ready(function() {
+            var entry = document.getElementById('log');
+            var timestamp = new Date();
+            entry.innerHTML = "<br />";
+            $(document).on('keypress', '#msg', function (key) {
+                var text = $("#msg").val();
+                if (key.which == 13) {
+                    entry.innerHTML = timestamp + " - " + text + "<br />" + entry.innerHTML;
+                }
+            });
+        });
+    </script>
+</html>
