@@ -18,15 +18,26 @@
 <script>
         // Your work will be done here...
         $(document).ready(function() {
+            var num_entry = 0;
             var entry = document.getElementById('log');
+            retrieve(entry);
             var timestamp = new Date();
             entry.innerHTML = "<br />";
             $(document).on('keypress', '#msg', function (key) {
                 var text = $("#msg").val();
                 if (key.which == 13) {
                     entry.innerHTML = timestamp + " - " + text + "<br />" + entry.innerHTML;
+                    localStorage.setItem(num_entry, entry.innerHTML);
+                    num_entry += 1;
                 }
             });
         });
+        function retrieve(entry) {
+            for (var i=0; i<localStorage.length; i++) {
+                var key = localStorage.key(i);
+                console.log(localStorage[key]);
+                entry.innerHTML = localStorage[key] + entry.innerHTML;
+            }
+        }
     </script>
 </html>
