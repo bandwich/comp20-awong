@@ -87,7 +87,7 @@
 			var info = new google.maps.InfoWindow({
 				content: ""
 			});
-			dataReq.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
+			dataReq.open("POST", "http://pure-eyrie-46995.herokuapp.com/sendLocation", true);
 			dataReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			dataReq.onreadystatechange = function() {
 				if (dataReq.readyState == 4 && dataReq.status == 200) {
