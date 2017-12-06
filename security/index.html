@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Index</title>
+</head>
+<body>
+	<h2>Introduction</h2>
+	<h2>Methodology</h2>
+	<h2>Abstract of Findings</h2>
+	<h2>Issues Found</h2>
+		<h3>Issue #1</h3>
+		<p>Issue: Javascript injection</p>
+		<p>Location: sendLocation API</p>
+		<p>Severity: High</p>
+		<p>Description of issue: The request parameters for sendLocation will accept JavaScript</p><img src="JsInjection" alt="JS">
+		<p>Proof of vulnerability: </p><img src = >
+		<p>Resolution: Check request parameters for special characters such as tags. To fix the issue, delete the entry from mongoDB.</p>
+		<h3>Issue #2</h3>
+		<p>Issue: MongoDB injection</p>
+		<p>Location: checkins.json API</p>
+		<p>Severity: High</p>
+		<p>Description of issue: Found that mongoDB can show all data except the query provided</p>
+		<img src="mongoDBInjection" alt="mongo">
+		<p>Proof of vulnerability: </p><img src = >
+		<p>Resolution: Check data for more than one login, and don’t send it if so (user should never be able to get data from more than one login)</p>
+	<h2>Conclusion</h2>
+	<p>Every instance where the user can input something has to be extensively checked to make sure the user can’t do anything they’re not supposed to</p>
+	<h2>References</h2>
+	<p>https://dzone.com/articles/mongodb-preventing-common-vulnerabilities-in-the-m</p>
+</body>
+
+Javascript injection
+
+
+
+Introduction
+
+Methodology
+First did black box testing using curl
+Then read the source code of my partner’s assignment 3.
+
+Abstract of Findings
+Found vulnerability in data input - the website is not protected against a redirection
+Vulnerability in displaying user data - input can be manipulated to show all user data
+
+Issues found
+Javascript injection
+sendLocation API
+High - the website no longer displays at all and can be changed to display anything
+Description - found that the request parameters will accept javascript
+	
+Proof
+Resolution - check parameters for javascript (special characters, <> tags)
+To fix, remove mongoDB entry with javascript
+
+MongoDB injection
+Checkins.json API
+High - all user data and location is publicly displayed on the site
+Description - found that mongoDB will show all data except the query provided
+http://salty-brook-32366.herokuapp.com/checkins.json?login[$ne]=ymOsHX1N
+
+Proof
+Resolution
+Check data for more than one login, and don’t send it if so (user should never be able to get data from more than one login)
+
+Conclusion
+Every instance where the user can input something has to be extensively checked to make sure the user can’t do anything they’re not supposed to
+References
+https://dzone.com/articles/mongodb-preventing-common-vulnerabilities-in-the-m
+
