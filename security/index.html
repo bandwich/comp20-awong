@@ -13,16 +13,17 @@
 		<p>Issue: Javascript injection</p>
 		<p>Location: sendLocation API</p>
 		<p>Severity: High</p>
-		<p>Description of issue: The request parameters for sendLocation will accept JavaScript</p><img src="JsInjection" alt="JS">
-		<p>Proof of vulnerability: </p><img src = >
+		<p>Description of issue: The request parameters for sendLocation will accept JavaScript.</p><img src="JsInjection.jpg" alt="JS">
+		<p>Proof of vulnerability: </p>
+		<img src="reddit.jpg">
 		<p>Resolution: Check request parameters for special characters such as tags. To fix the issue, delete the entry from mongoDB.</p>
 		<h3>Issue #2</h3>
 		<p>Issue: MongoDB injection</p>
 		<p>Location: checkins.json API</p>
 		<p>Severity: High</p>
-		<p>Description of issue: Found that mongoDB can show all data except the query provided</p>
-		<img src="mongoDBInjection" alt="mongo">
-		<p>Proof of vulnerability: </p><img src = >
+		<p>Description of issue: Found that mongoDB can show all data except the query provided using login[$ne]</p>
+		<p>Proof of vulnerability: </p>
+				<img src="mongoDBInjection.jpg" alt="mongo">
 		<p>Resolution: Check data for more than one login, and don’t send it if so (user should never be able to get data from more than one login)</p>
 	<h2>Conclusion</h2>
 	<p>Every instance where the user can input something has to be extensively checked to make sure the user can’t do anything they’re not supposed to</p>
